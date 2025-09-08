@@ -16,12 +16,15 @@
     const params = new URL(location.href).searchParams;
     const sharedUrl = params.get('url') || params.get('text');
     if (sharedUrl) {
-      const urlElem = document.getElementById('url');
-      const link = document.createElement('a');
-      link.href = sharedUrl;
-      link.textContent = sharedUrl;
-      urlElem.textContent = '';
-      urlElem.appendChild(link);
+      try {
+        const url = new URL(sharedUrl);
+        const domain = url.hostname.replace(/^www\./, '');
+        const bugmenotUrl = `https://bugmenot.com/view/${domain}`;
+        window.location.href = bugmenotUrl;
+      } catch (e) {
+        const urlElem = document.getElementById('url');
+        urlElem.textContent = 'Invalid URL: ' + sharedUrl;
+      }
     }
   </script>
 </body>
